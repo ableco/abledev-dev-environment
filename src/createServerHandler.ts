@@ -2,6 +2,9 @@ import path from "path";
 import express from "express";
 import cors from "cors";
 import asyncHandler from "express-async-handler";
+import webpack from "webpack";
+import WebpackDevMiddleware from "webpack-dev-middleware";
+import WebpackHotMiddleware from "webpack-hot-middleware";
 
 type AnyFunction = (...args: any) => any;
 
@@ -9,9 +12,9 @@ type AppOptions =
   | {
       mode: "development";
       srcPath: string;
-      extendApp?: (app: express.Express) => void;
+      webpackConfig: webpack.Configuration;
     }
-  | { mode: "production"; srcPath?: never; extendApp?: never };
+  | { mode: "production"; srcPath?: never; webpackConfig?: never };
 
 type Mappings = { [key: string]: AnyFunction };
 
@@ -38,8 +41,10 @@ function createServerHandler({
       app.use(cors());
     }
 
-    if (appOptions.extendApp) {
-      appOptions.extendApp(app);
+    if (appOptions.webpackConfig) {
+      const webpackCompiler = webpack(appOptions.webpackConfig);
+      app.use(WebpackDevMiddleware(webpackCompiler));
+      app.use(WebpackHotMiddleware(webpackCompiler));
     }
 
     app.get(

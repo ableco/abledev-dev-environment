@@ -18,7 +18,7 @@ const config: Configuration = {
   },
   externalsPresets: { node: true },
   target: "node",
-  externals: [nodeExternals()] as Configuration["externals"],
+  externals: [nodeExternals()],
   module: {
     rules: [
       {

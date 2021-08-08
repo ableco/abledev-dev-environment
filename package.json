@@ -7,22 +7,35 @@
   "scripts": {
     "build": "webpack"
   },
+  "bin": {
+    "build-backend-functions": "./dist/build-backend-functions.js"
+  },
   "author": "Julio García",
   "license": "ISC",
   "dependencies": {
+    "@types/glob": "^7.1.4",
+    "@types/minimist": "^1.2.2",
     "@types/webpack-dev-middleware": "^5.0.2",
     "@types/webpack-hot-middleware": "^2.25.5",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-async-handler": "^1.1.4",
+    "glob": "^7.1.7",
+    "make-dir": "^3.1.0",
+    "minimist": "^1.2.5",
+    "shebang-loader": "^0.0.1",
     "webpack-dev-middleware": "^5.0.0",
     "webpack-hot-middleware": "^2.25.0"
   },
   "devDependencies": {
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
     "@types/node": "^16.4.13",
     "@types/webpack-node-externals": "^2.5.2",
+    "html-webpack-plugin": "^5.3.2",
+    "prettier": "^2.3.2",
+    "react-refresh-typescript": "^2.0.2",
     "ts-loader": "^9.2.5",
     "ts-node": "^10.1.0",
     "tslib": "^2.3.0",

@@ -31,7 +31,7 @@ function createServerHandler({
   componentModuleSystem: ComponentModuleSystem;
 }) {
   return function createHandleRequest(
-    appOptions: AppOptions = { mode: "production" }
+    appOptions: AppOptions = { mode: "production" },
   ) {
     const app = express();
 
@@ -58,7 +58,7 @@ function createServerHandler({
           appOptions,
           componentModuleSystem,
         });
-      })
+      }),
     );
 
     app.post(
@@ -72,7 +72,7 @@ function createServerHandler({
           appOptions,
           componentModuleSystem,
         });
-      })
+      }),
     );
 
     return app;

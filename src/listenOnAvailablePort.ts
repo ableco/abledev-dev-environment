@@ -7,7 +7,7 @@ interface ErrorWithCode extends Error {
 
 async function listenOnAvailablePort(
   server: Server,
-  preferredPort: number
+  preferredPort: number,
 ): Promise<number> {
   return new Promise((resolve, reject) => {
     server

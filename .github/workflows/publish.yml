@@ -1,0 +1,28 @@
+name: Publish to npm
+on:
+  release:
+    types: [published]
+jobs:
+  publish-npm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 12
+          registry-url: https://registry.able.co/
+          scope: ableco
+      - name: Get yarn cache
+        id: yarn-cache
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - uses: actions/cache@v1
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: ${{ runner.os }}-yarn-
+      - run: yarn install
+      - run: npm run build
+      - run: npm publish
+        env:
+          NODE_ENV: "production"
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}

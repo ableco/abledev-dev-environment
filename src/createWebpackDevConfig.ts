@@ -3,13 +3,16 @@ import HtmlWebpackPlugin from "html-webpack-plugin";
 import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
 import ReactRefreshTypeScript from "react-refresh-typescript";
 import createImportTransformer from "./createImportTransformer";
+import webpackMerge from "webpack-merge";
 
 function createWebpackDevConfig({
   entry,
   template,
+  __internal__extendConfig,
 }: {
   entry: string;
   template: string;
+  __internal__extendConfig?: Partial<Configuration>;
 }) {
   const config: Configuration = {
     mode: "development",
@@ -41,7 +44,9 @@ function createWebpackDevConfig({
     ],
   };
 
-  return config;
+  return __internal__extendConfig
+    ? webpackMerge(config, __internal__extendConfig)
+    : config;
 }
 
 export default createWebpackDevConfig;

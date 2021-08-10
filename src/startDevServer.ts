@@ -14,8 +14,8 @@ function startDevServer({ preferredPort, handleRequest }: DevServerOptions) {
     handleRequest(request, response);
   });
 
-  listenOnAvailablePort(server, preferredPort).then((port) => {
-    console.log("Server listening at port", port);
+  listenOnAvailablePort(server, preferredPort).then((address) => {
+    console.log("Server listening at port", address.port);
   });
 }
 

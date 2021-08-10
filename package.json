@@ -1,11 +1,12 @@
 {
   "name": "@ableco/abledev-dev-environment",
-  "version": "0.0.1-alpha2",
+  "version": "0.0.1-alpha3",
   "description": "",
   "main": "dist/abledev-dev-environment.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "webpack"
+    "build": "webpack",
+    "test": "jest"
   },
   "bin": {
     "build-backend-functions": "./dist/build-backend-functions.js"
@@ -24,6 +25,7 @@
     "make-dir": "^3.1.0",
     "minimist": "^1.2.5",
     "shebang-loader": "^0.0.1",
+    "superjson": "^1.7.5",
     "webpack-dev-middleware": "^5.0.0",
     "webpack-hot-middleware": "^2.25.0",
     "webpack-merge": "^5.8.0"
@@ -32,11 +34,16 @@
     "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
+    "@types/jest": "^26.0.24",
     "@types/node": "^16.4.13",
+    "@types/node-fetch": "^2.5.12",
     "@types/webpack-node-externals": "^2.5.2",
     "html-webpack-plugin": "^5.3.2",
+    "jest": "^27.0.6",
+    "node-fetch": "^2.6.1",
     "prettier": "^2.3.2",
     "react-refresh-typescript": "^2.0.2",
+    "ts-jest": "^27.0.4",
     "ts-loader": "^9.2.5",
     "ts-node": "^10.1.0",
     "tslib": "^2.3.0",

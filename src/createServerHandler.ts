@@ -3,8 +3,10 @@ import express from "express";
 import cors from "cors";
 import asyncHandler from "express-async-handler";
 import webpack from "webpack";
+import superjson from "superjson";
 import WebpackDevMiddleware from "webpack-dev-middleware";
 import WebpackHotMiddleware from "webpack-hot-middleware";
+import superjsonMiddleware from "./superjsonMiddleware";
 
 type AnyFunction = (...args: any) => any;
 
@@ -37,7 +39,9 @@ function createServerHandler({
   ) {
     const app = express();
 
-    app.use(express.json());
+    app.use(express.text({ type: "application/json" }));
+    // NOTE: Replace with official superjson middleware if/when it comes out
+    app.use(superjsonMiddleware);
 
     if (appOptions.mode === "development") {
       app.use(cors());
@@ -85,7 +89,7 @@ function getFunctionArguments(type: FunctionType, request: express.Request) {
   if (type === "mutation") {
     return request.body as object;
   } else {
-    return request.params;
+    return request.query;
   }
 }
 
@@ -133,7 +137,7 @@ async function handleBackendFunction({
       request,
       response,
     });
-    response.status(200).json(result);
+    response.status(200).send(superjson.stringify(result));
   } else {
     response.status(500).json({
       message: `${type} is not a function: ${functionName}`,

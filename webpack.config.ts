@@ -9,7 +9,7 @@ function buildConfig(
   entry: string,
   filename: string,
   name: string,
-  plugins?: Configuration["plugins"]
+  plugins?: Configuration["plugins"],
 ) {
   const config: Configuration = {
     mode: "production",
@@ -64,12 +64,12 @@ export default [
   buildConfig(
     "./src/index.ts",
     "abledev-dev-environment.js",
-    "abledev-dev-environment"
+    "abledev-dev-environment",
   ),
   buildConfig(
     "./src/buildBackendFunctions.ts",
     "build-backend-functions.js",
     "build-backend-functions",
-    [new webpack.BannerPlugin({ banner: "#!/usr/bin/env node", raw: true })]
+    [new webpack.BannerPlugin({ banner: "#!/usr/bin/env node", raw: true })],
   ),
 ];

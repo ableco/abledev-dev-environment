@@ -23,6 +23,8 @@ type ComponentModuleSystem = {
   requireCache: NodeJS.Require["cache"];
 };
 
+type FunctionType = "query" | "mutation";
+
 function createServerHandler({
   mappings,
   componentModuleSystem,
@@ -79,6 +81,14 @@ function createServerHandler({
   };
 }
 
+function getFunctionArguments(type: FunctionType, request: express.Request) {
+  if (type === "mutation") {
+    return request.body as object;
+  } else {
+    return request.params;
+  }
+}
+
 async function handleBackendFunction({
   request,
   response,
@@ -89,7 +99,7 @@ async function handleBackendFunction({
 }: {
   request: express.Request;
   response: express.Response;
-  type: "query" | "mutation";
+  type: FunctionType;
   appOptions: AppOptions;
   mappings: Mappings;
   componentModuleSystem: ComponentModuleSystem;
@@ -109,14 +119,17 @@ async function handleBackendFunction({
     try {
       backendFunction = (await importPath(functionPath)).default;
     } catch {
-      console.log("ERROR IMPORTING !!!", functionPath, require.cache);
+      response.status(500).json({
+        message: `Error importing function: ${functionName}`,
+      });
+      return;
     }
   } else {
     backendFunction = mappings[functionName as keyof typeof mappings];
   }
 
   if (typeof backendFunction === "function") {
-    const result = backendFunction({
+    const result = backendFunction(getFunctionArguments(type, request), {
       request,
       response,
     });

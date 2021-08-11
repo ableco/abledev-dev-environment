@@ -1,21 +1,23 @@
-import path from "path";
 import nodeExternals from "webpack-node-externals";
 import createImportTransformer from "./createImportTransformer";
 
 function createWebpackBuildConfigs({
   entries,
+  distPath,
 }: {
   entries: {
     web: string;
     node: string;
   };
+  distPath: string;
 }) {
-  return [createConfig("node", entries.node), createConfig("web", entries.web)];
+  return [
+    createConfig("node", entries.node, distPath),
+    createConfig("web", entries.web, distPath),
+  ];
 }
 
-function createConfig(target: "node" | "web", entry: string) {
-  const distPath = path.resolve(__dirname, "dist");
-
+function createConfig(target: "node" | "web", entry: string, distPath: string) {
   return {
     mode: "production",
     entry: entry,
@@ -71,7 +73,7 @@ function createConfig(target: "node" | "web", entry: string) {
       ],
     },
     resolve: {
-      extensions: [".ts", ".tsx", ".ts", ".js", ".jsx"],
+      extensions: [".ts", ".tsx", ".js", ".jsx"],
     },
     optimization: {
       minimize: false,

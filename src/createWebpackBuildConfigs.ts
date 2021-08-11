@@ -71,7 +71,7 @@ function createConfig(target: "node" | "web", entry: string) {
       ],
     },
     resolve: {
-      extensions: [".ts", ".tsx", ".ts", ".js"],
+      extensions: [".ts", ".tsx", ".ts", ".js", ".jsx"],
     },
     optimization: {
       minimize: false,

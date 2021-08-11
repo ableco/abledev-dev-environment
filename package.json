@@ -1,6 +1,6 @@
 {
   "name": "@ableco/abledev-dev-environment",
-  "version": "0.0.1-alpha8",
+  "version": "0.0.1-alpha9",
   "description": "",
   "main": "dist/abledev-dev-environment.js",
   "types": "dist/index.d.ts",
@@ -23,6 +23,7 @@
     "express": "^4.17.1",
     "express-async-handler": "^1.1.4",
     "glob": "^7.1.7",
+    "html-webpack-plugin": "^5.3.2",
     "make-dir": "^3.1.0",
     "minimist": "^1.2.5",
     "postcss-loader": "^6.1.1",
@@ -41,7 +42,6 @@
     "@types/node": "^16.4.13",
     "@types/node-fetch": "^2.5.12",
     "@types/webpack-node-externals": "^2.5.2",
-    "html-webpack-plugin": "^5.3.2",
     "jest": "^27.0.6",
     "node-fetch": "^2.6.1",
     "prettier": "^2.3.2",

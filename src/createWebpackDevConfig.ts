@@ -20,7 +20,7 @@ function createWebpackDevConfig({
     module: {
       rules: [
         {
-          test: /\.tsx?$/,
+          test: /\.(j|t)sx?$/,
           loader: "ts-loader",
           exclude: /node_modules/,
           options: {
@@ -31,6 +31,10 @@ function createWebpackDevConfig({
               };
             },
           },
+        },
+        {
+          test: /\.css$/i,
+          use: ["style-loader", "css-loader", "postcss-loader"],
         },
       ],
     },

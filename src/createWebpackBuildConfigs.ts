@@ -49,7 +49,7 @@ function createConfig(target: "node" | "web", entry: string) {
     module: {
       rules: [
         {
-          test: /\.tsx?$/,
+          test: /\.(j|t)sx?$/,
           loader: "ts-loader",
           options: {
             compilerOptions: {
@@ -63,6 +63,10 @@ function createConfig(target: "node" | "web", entry: string) {
             },
           },
           exclude: /node_modules/,
+        },
+        {
+          test: /\.css$/i,
+          use: ["style-loader", "css-loader", "postcss-loader"],
         },
       ],
     },

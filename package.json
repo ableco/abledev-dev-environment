@@ -1,6 +1,6 @@
 {
   "name": "@ableco/abledev-dev-environment",
-  "version": "0.0.1-alpha9",
+  "version": "0.0.1-alpha10",
   "description": "",
   "main": "dist/abledev-dev-environment.js",
   "types": "dist/index.d.ts",
@@ -14,6 +14,7 @@
   "author": "Julio García",
   "license": "ISC",
   "dependencies": {
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
     "@types/glob": "^7.1.4",
     "@types/minimist": "^1.2.2",
     "@types/webpack-dev-middleware": "^5.0.2",
@@ -27,15 +28,16 @@
     "make-dir": "^3.1.0",
     "minimist": "^1.2.5",
     "postcss-loader": "^6.1.1",
+    "react-refresh-typescript": "^2.0.2",
     "shebang-loader": "^0.0.1",
     "style-loader": "^3.2.1",
     "superjson": "^1.7.5",
     "webpack-dev-middleware": "^5.0.0",
     "webpack-hot-middleware": "^2.25.0",
-    "webpack-merge": "^5.8.0"
+    "webpack-merge": "^5.8.0",
+    "webpack-node-externals": "^3.0.0"
   },
   "devDependencies": {
-    "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
     "@types/jest": "^26.0.24",
@@ -45,14 +47,12 @@
     "jest": "^27.0.6",
     "node-fetch": "^2.6.1",
     "prettier": "^2.3.2",
-    "react-refresh-typescript": "^2.0.2",
     "ts-jest": "^27.0.4",
     "ts-loader": "^9.2.5",
     "ts-node": "^10.1.0",
     "tslib": "^2.3.0",
     "typescript": "^4.3.5",
     "webpack": "^5.49.0",
-    "webpack-cli": "^4.7.2",
-    "webpack-node-externals": "^3.0.0"
+    "webpack-cli": "^4.7.2"
   }
 }

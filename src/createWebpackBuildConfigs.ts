@@ -1,5 +1,6 @@
 import nodeExternals from "webpack-node-externals";
 import createImportTransformer from "./createImportTransformer";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
 
 function createWebpackBuildConfigs({
   entries,
@@ -68,7 +69,7 @@ function createConfig(target: "node" | "web", entry: string, distPath: string) {
         },
         {
           test: /\.css$/i,
-          use: ["style-loader", "css-loader", "postcss-loader"],
+          use: [MiniCssExtractPlugin.loader, "css-loader", "postcss-loader"],
         },
       ],
     },
@@ -78,6 +79,7 @@ function createConfig(target: "node" | "web", entry: string, distPath: string) {
     optimization: {
       minimize: false,
     },
+    plugins: [new MiniCssExtractPlugin()],
   };
 }
 

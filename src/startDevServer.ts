@@ -9,14 +9,17 @@ type DevServerOptions = {
   handleRequest: HandleRequest;
 };
 
-function startDevServer({ preferredPort, handleRequest }: DevServerOptions) {
+async function startDevServer({
+  preferredPort,
+  handleRequest,
+}: DevServerOptions) {
   const server = createServer((request, response) => {
     handleRequest(request, response);
   });
 
-  listenOnAvailablePort(server, preferredPort).then((address) => {
-    console.log("Server listening at port", address.port);
-  });
+  const address = await listenOnAvailablePort(server, preferredPort);
+  console.log("Server listening at port", address.port);
+  return { server, address };
 }
 
 export default startDevServer;

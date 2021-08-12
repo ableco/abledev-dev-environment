@@ -10,13 +10,24 @@ import superjsonMiddleware from "./superjsonMiddleware";
 
 type AnyFunction = (...args: any) => any;
 
-type AppOptions =
+type LeanHostContext<HostContext> = Omit<
+  Omit<HostContext, "request">,
+  "response"
+>;
+
+type AppOptions<HostContext> =
   | {
       mode: "development";
       srcPath: string;
       webpackConfig: webpack.Configuration;
+      hostContext: LeanHostContext<HostContext>;
     }
-  | { mode: "production"; srcPath?: never; webpackConfig?: never };
+  | {
+      mode: "production";
+      srcPath?: never;
+      webpackConfig?: never;
+      hostContext: {} | LeanHostContext<HostContext>;
+    };
 
 type Mappings = { [key: string]: AnyFunction };
 
@@ -34,8 +45,11 @@ function createServerHandler({
   mappings: Mappings;
   componentModuleSystem: ComponentModuleSystem;
 }) {
-  return function createHandleRequest(
-    appOptions: AppOptions = { mode: "production" },
+  return function createHandleRequest<HostContext extends object>(
+    appOptions: AppOptions<HostContext> = {
+      mode: "production",
+      hostContext: {},
+    },
   ) {
     const app = express();
 
@@ -56,7 +70,7 @@ function createServerHandler({
     app.get(
       "/abledev/call-query",
       asyncHandler(async (request, response) => {
-        handleBackendFunction({
+        await handleBackendFunction<HostContext>({
           request,
           response,
           type: "query",
@@ -70,7 +84,7 @@ function createServerHandler({
     app.post(
       "/abledev/call-mutation",
       asyncHandler(async (request, response) => {
-        handleBackendFunction({
+        await handleBackendFunction<HostContext>({
           request,
           response,
           type: "mutation",
@@ -93,7 +107,7 @@ function getFunctionArguments(type: FunctionType, request: express.Request) {
   }
 }
 
-async function handleBackendFunction({
+async function handleBackendFunction<HostContext>({
   request,
   response,
   type,
@@ -104,7 +118,7 @@ async function handleBackendFunction({
   request: express.Request;
   response: express.Response;
   type: FunctionType;
-  appOptions: AppOptions;
+  appOptions: AppOptions<HostContext>;
   mappings: Mappings;
   componentModuleSystem: ComponentModuleSystem;
 }) {
@@ -124,7 +138,7 @@ async function handleBackendFunction({
       backendFunction = (await importPath(functionPath)).default;
     } catch {
       response.status(500).json({
-        message: `Error importing function: ${functionName}`,
+        message: `Error importing function: ${functionName}. Tried: ${functionPath}`,
       });
       return;
     }
@@ -133,9 +147,14 @@ async function handleBackendFunction({
   }
 
   if (typeof backendFunction === "function") {
-    const result = backendFunction(getFunctionArguments(type, request), {
+    const functionContext = {
       request,
       response,
+    };
+
+    const result = await backendFunction(getFunctionArguments(type, request), {
+      ...functionContext,
+      ...appOptions.hostContext,
     });
     response.status(200).send(superjson.stringify(result));
   } else {

@@ -4,6 +4,14 @@ import createServerHandler from "./createServerHandler";
 import { listenOnAvailablePort } from "./listenOnAvailablePort";
 import superjson from "superjson";
 
+function wait(timeInMs: number) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(timeInMs);
+    }, timeInMs);
+  });
+}
+
 describe("createServerHandler", () => {
   const mappings = {
     "queries/simple": () => ({
@@ -11,6 +19,13 @@ describe("createServerHandler", () => {
       simpleString: "string",
       simpleNumber: 9999,
     }),
+    "queries/with-error": () => {
+      throw new Error("Sync error");
+    },
+    "queries/with-async-error": async () => {
+      await wait(50);
+      throw new Error("Async error");
+    },
     "mutations/complex": ({ date }: { date: Date }) => {
       return {
         date,
@@ -39,6 +54,30 @@ describe("createServerHandler", () => {
 
   afterEach(() => {
     server.close();
+  });
+
+  it("tolerate errors", async () => {
+    const { port } = await listenOnAvailablePort(server, 3000);
+    const firstResponse = await fetch(
+      `http://localhost:${port}/abledev/call-query?key=queries/with-error`,
+    );
+    const secondResponse = await fetch(
+      `http://localhost:${port}/abledev/call-query?key=queries/with-error`,
+    );
+    expect(firstResponse.status).toEqual(500);
+    expect(secondResponse.status).toEqual(500);
+  });
+
+  it("tolerate async errors", async () => {
+    const { port } = await listenOnAvailablePort(server, 3000);
+    const firstResponse = await fetch(
+      `http://localhost:${port}/abledev/call-query?key=queries/with-async-error`,
+    );
+    const secondResponse = await fetch(
+      `http://localhost:${port}/abledev/call-query?key=queries/with-async-error`,
+    );
+    expect(firstResponse.status).toEqual(500);
+    expect(secondResponse.status).toEqual(500);
   });
 
   it("allows returning superjson", async () => {

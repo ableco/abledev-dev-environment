@@ -1,9 +1,10 @@
-import path from "path";
-import express from "express";
 import cors from "cors";
+import express from "express";
 import asyncHandler from "express-async-handler";
-import webpack from "webpack";
+import morgan from "morgan";
+import path from "path";
 import superjson from "superjson";
+import webpack from "webpack";
 import WebpackDevMiddleware from "webpack-dev-middleware";
 import WebpackHotMiddleware from "webpack-hot-middleware";
 import superjsonMiddleware from "./superjsonMiddleware";
@@ -66,6 +67,8 @@ function createServerHandler({
       app.use(WebpackDevMiddleware(webpackCompiler));
       app.use(WebpackHotMiddleware(webpackCompiler));
     }
+
+    app.use(morgan("dev"));
 
     app.get(
       "/abledev/call-query",

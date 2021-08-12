@@ -1,6 +1,6 @@
 {
   "name": "@ableco/abledev-dev-environment",
-  "version": "0.0.1-alpha12",
+  "version": "0.0.1-alpha13",
   "description": "",
   "main": "dist/abledev-dev-environment.js",
   "types": "dist/index.d.ts",
@@ -17,6 +17,7 @@
     "@pmmmwh/react-refresh-webpack-plugin": "^0.4.3",
     "@types/glob": "^7.1.4",
     "@types/minimist": "^1.2.2",
+    "@types/morgan": "^1.9.3",
     "@types/webpack-dev-middleware": "^5.0.2",
     "@types/webpack-hot-middleware": "^2.25.5",
     "cors": "^2.8.5",
@@ -29,6 +30,7 @@
     "make-dir": "^3.1.0",
     "mini-css-extract-plugin": "^2.2.0",
     "minimist": "^1.2.5",
+    "morgan": "^1.10.0",
     "postcss-loader": "^6.1.1",
     "react-refresh": "^0.10.0",
     "react-refresh-typescript": "^2.0.2",

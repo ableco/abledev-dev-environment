@@ -17,6 +17,7 @@ function createWebpackDevConfig({
   const config: Configuration = {
     mode: "development",
     entry: [entry, "webpack-hot-middleware/client"],
+    stats: "errors-only",
     module: {
       rules: [
         {

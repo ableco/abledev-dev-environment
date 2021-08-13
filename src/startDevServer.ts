@@ -1,5 +1,6 @@
 import expressAsyncHandler from "express-async-handler";
 import { createServer } from "http";
+import superjson from "superjson";
 import createServerHandler from "./createServerHandler";
 import { listenOnAvailablePort } from "./listenOnAvailablePort";
 
@@ -21,7 +22,7 @@ async function startDevServer({
       "/dev/preview-data",
       expressAsyncHandler(async (_request, response) => {
         const data = await getPreviewData();
-        response.json(data);
+        response.status(200).send(superjson.stringify(data));
       }),
     );
   }

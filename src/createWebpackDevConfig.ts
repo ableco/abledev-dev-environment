@@ -4,16 +4,18 @@ import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
 import ReactRefreshTypeScript from "react-refresh-typescript";
 import createImportTransformer from "./createImportTransformer";
 import webpackMerge from "webpack-merge";
+import path from "path";
 
 function createWebpackDevConfig({
-  entry,
-  template,
+  previewFolderPath,
   __internal__extendConfig,
 }: {
-  entry: string;
-  template: string;
+  previewFolderPath: string;
   __internal__extendConfig?: Partial<Configuration>;
 }) {
+  const entry = path.join(previewFolderPath, "index.tsx");
+  const template = path.join(previewFolderPath, "index.html");
+
   const config: Configuration = {
     mode: "development",
     entry: [entry, "webpack-hot-middleware/client"],

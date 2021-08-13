@@ -18,8 +18,7 @@ describe("createServerHandler", () => {
     hostContext: {},
     srcPath: path.resolve(__dirname, "../testHelpers/fakeSrc"),
     webpackConfig: createWebpackDevConfig({
-      entry: "./testHelpers/fakePreview/index.tsx",
-      template: "./testHelpers/fakePreview/index.html",
+      previewFolderPath: path.resolve(__dirname, "../testHelpers/fakePreview"),
     }),
   });
 

@@ -11,7 +11,7 @@ import superjsonMiddleware from "./superjsonMiddleware";
 
 type AnyFunction = (...args: any) => any;
 
-type LeanHostContext<HostContext> = Omit<
+export type LeanHostContext<HostContext> = Omit<
   Omit<HostContext, "request">,
   "response"
 >;

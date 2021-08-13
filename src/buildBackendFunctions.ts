@@ -3,6 +3,7 @@
 import child_process from "child_process";
 import fs from "fs/promises";
 import makeDir from "make-dir";
+import minimist from "minimist";
 import path from "path";
 import util from "util";
 import getFunctionMappings, {
@@ -10,7 +11,6 @@ import getFunctionMappings, {
   FunctionMappings,
 } from "./getFunctionMappings";
 import { pathExists } from "./pathExists";
-import minimist from "minimist";
 
 const exec = util.promisify(child_process.exec);
 
@@ -44,7 +44,7 @@ function createIndexFileContents(functionMappings: FunctionMappings) {
 
     imports[identifierName] = {
       definition,
-      importLine: `import ${identifierName} from "./src/${definition.functionName}";`,
+      importLine: `import ${identifierName} from "./${definition.functionName}";`,
     };
     identifierCounter += 1;
   });

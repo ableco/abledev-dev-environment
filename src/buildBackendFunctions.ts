@@ -19,14 +19,7 @@ async function compileFunctions(
   backendFunctionsPath: string,
 ) {
   for await (const [_, definition] of Object.entries(functionMappings)) {
-    const destinationFilePath = path.join(
-      backendFunctionsPath,
-      definition.fileName,
-    );
-    const destinationDirectory = path.dirname(destinationFilePath);
-
-    await makeDir(destinationDirectory);
-    await buildTsFile(definition.sourcePath, destinationDirectory);
+    await buildTsFile(definition.sourcePath, backendFunctionsPath);
   }
 }
 
@@ -51,7 +44,7 @@ function createIndexFileContents(functionMappings: FunctionMappings) {
 
     imports[identifierName] = {
       definition,
-      importLine: `import ${identifierName} from "./${definition.functionName}";`,
+      importLine: `import ${identifierName} from "./src/${definition.functionName}";`,
     };
     identifierCounter += 1;
   });

@@ -106,10 +106,9 @@ async function ensureBackendFunctionsDirectory(backendFunctionsPath: string) {
 }
 
 function getEmptyIndexFileContents() {
-  return [
-    "const mappings: { [key: string]: Function } = {};",
-    "export default mappings;",
-  ].join("\n");
+  return ["const mappings = {} as const;", "export default mappings;"].join(
+    "\n",
+  );
 }
 
 async function buildBackendFunctions() {

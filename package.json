@@ -1,6 +1,6 @@
 {
   "name": "@ableco/abledev-dev-environment",
-  "version": "0.0.1-alpha17",
+  "version": "0.0.1-alpha18",
   "description": "",
   "main": "dist/abledev-dev-environment.js",
   "types": "dist/index.d.ts",

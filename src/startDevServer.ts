@@ -1,31 +1,44 @@
 import expressAsyncHandler from "express-async-handler";
 import { createServer } from "http";
 import superjson from "superjson";
-import createServerHandler from "./createServerHandler";
+import { CreateHandleRequest } from "./createServerHandler";
 import { listenOnAvailablePort } from "./listenOnAvailablePort";
+import path from "path";
+import createWebpackDevConfig from "./createWebpackDevConfig";
 
-type HandleRequest = ReturnType<ReturnType<typeof createServerHandler>>;
-
-type DevServerOptions = {
-  preferredPort: number;
-  handleRequest: HandleRequest;
-  getPreviewData?: () => Promise<unknown>;
+type DevServerOptions<HostContext> = {
+  preferredPort?: number;
+  createHandleRequest: CreateHandleRequest;
+  getPreviewData: (hostContext: HostContext) => Promise<unknown>;
+  hostContext: HostContext;
+  projectRoot?: string;
 };
 
-async function startDevServer({
-  preferredPort,
-  handleRequest,
+async function startDevServer<HostContext extends object>({
+  preferredPort = 5000,
+  createHandleRequest,
   getPreviewData,
-}: DevServerOptions) {
-  if (getPreviewData) {
-    handleRequest.get(
-      "/dev/preview-data",
-      expressAsyncHandler(async (_request, response) => {
-        const data = await getPreviewData();
-        response.status(200).send(superjson.stringify(data));
-      }),
-    );
-  }
+  hostContext,
+  projectRoot = process.cwd(),
+}: DevServerOptions<HostContext>) {
+  const webpackConfig = createWebpackDevConfig({
+    previewFolderPath: path.join(projectRoot, "preview"),
+  });
+
+  const handleRequest = createHandleRequest<HostContext>({
+    mode: "development",
+    srcPath: path.join(projectRoot, "src"),
+    webpackConfig,
+    hostContext,
+  });
+
+  handleRequest.get(
+    "/dev/preview-data",
+    expressAsyncHandler(async (_request, response) => {
+      const data = await getPreviewData(hostContext);
+      response.status(200).send(superjson.stringify(data));
+    }),
+  );
 
   const server = createServer((request, response) => {
     handleRequest(request, response);

@@ -1,5 +1,4 @@
 import createServerHandler from "./createServerHandler";
-import createWebpackDevConfig from "./createWebpackDevConfig";
 import startDevServer from "./startDevServer";
 import fetch from "node-fetch";
 import path from "path";
@@ -13,19 +12,15 @@ describe("createServerHandler", () => {
     },
   });
 
-  const handleRequest = createHandleRequest({
-    mode: "development",
-    hostContext: {},
-    srcPath: path.resolve(__dirname, "../testHelpers/fakeSrc"),
-    webpackConfig: createWebpackDevConfig({
-      previewFolderPath: path.resolve(__dirname, "../testHelpers/fakePreview"),
-    }),
-  });
-
   it("can create a dev server that tolerate errors", async () => {
     const { address, server } = await startDevServer({
       preferredPort: 7000,
-      handleRequest,
+      createHandleRequest,
+      getPreviewData: async () => {
+        return {};
+      },
+      hostContext: {},
+      projectRoot: path.resolve(__dirname, "../testHelpers/fakeProject"),
     });
 
     const firstResponse = await fetch(

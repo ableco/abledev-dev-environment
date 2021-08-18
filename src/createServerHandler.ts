@@ -167,4 +167,6 @@ async function handleBackendFunction<HostContext>({
   }
 }
 
+export type CreateHandleRequest = ReturnType<typeof createServerHandler>;
+
 export default createServerHandler;

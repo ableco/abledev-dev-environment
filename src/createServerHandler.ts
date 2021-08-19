@@ -155,10 +155,6 @@ async function handleBackendFunction<HostContext>({
       response,
     };
 
-    console.log("APP_OPTIONS");
-    console.log(appOptions);
-    console.log("APP_OPTIONS");
-
     const result = await backendFunction(getFunctionArguments(type, request), {
       ...functionContext,
       ...appOptions.hostContext,
